@@ -30,7 +30,7 @@ reached_critcal_level () {
 startGame () {
   local critcal_level=1
   while true;do
-    local ERROR=$(./start-new-game "$nNN")
+    local ERROR=$(./start-new-game.co "$nNN")
     if [ "$ERROR" ];then
       if [ "$ERROR" == "ERROR" ];then
         sleep 8
@@ -108,7 +108,7 @@ getResult () {
       reached_critcal_level result
     fi
     echo -n "-> "
-    guessRes=$(./send-to-bot $clipGuess)  
+    guessRes=$(./send-to-bot.co $clipGuess)  
     if [ "$guessRes" ];then
       if [ "$guessRes" == "ERROR" ];then
         sleep 3
@@ -557,6 +557,6 @@ main () {
   done
 }
 
-./get-result
+./get-result.co
 clear
 main
