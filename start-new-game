@@ -1,2 +1,0 @@
-cd $(dirname $0)/telegram
-./start-new-game.co $1

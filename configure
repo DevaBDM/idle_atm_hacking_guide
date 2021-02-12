@@ -1,0 +1,41 @@
+
+INSTALL_FOLDER="guess_atm_in_idle_city_game_cache"
+INSTALL_PREFIX="$PREFIX/opt/bin"
+IMSTALL="$INSTALL_PREFIX/$INSTALL_FOLDER"
+
+bin_FILES="get-result.co send-to-bot.co start-new-game.co real-td.co"
+if [ ! -d "$INSTALL" ];then
+	mkdir -p "$INSTALL" || \
+	exit 5 
+fi
+
+if [ -s "hackIdleATM" ];then
+  mv "hackIdleATM" "$INSTALL_PREFIX/" && \
+  chmod +x "$INSTALL_PREFIX/hackIdleATM" || \
+  echo "can't move hackIdleATM to \"$INSTALL_PREFIX/\"" \
+  echo "move it yourself!!!!!" \
+  exit 6
+else
+  echo "hackIdleATM not found"
+  exit 7
+fi
+
+cmake -DCMAKE_BUILD_TYPE=release src/ && \ 
+cmake --build . && \
+termux-elf-cleaner $bin_FILES
+for file in $bin_FILES;do
+	if [ -s "$file" ];then
+		mv "$file" "$INSTALL/"
+		chmod +x "$INSTALL/$file"
+	else
+		echo "\"$file\" not found"
+		exit 8
+	fi
+done
+echo "cd \"$INSTALL\"" > "$INSTALL_PREFIX/real-td" && \
+echo "./real-td.co" >> "$INSTALL_PREFIX/real-td" && \
+chmod +x "$INSTALL_PREFIX/real-td" || \
+exit 9
+
+cd $INSTALL_PREFIX
+./real-td
