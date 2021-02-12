@@ -72,7 +72,7 @@ class TdExample {
         process_response(client_manager_->receive(10));
       } else {
         if ( sent_number_message == 0){
-            for ( int i = 1; i <= 5000; i++) {
+            for ( int i = 1; i <= 500; i++) {
               auto response = client_manager_->receive(0);
               if (response.object) {
                 process_response(std::move(response));
