@@ -117,7 +117,6 @@ class TdExample {
                       sleep(time_To_wait);
                       time_To_wait+=2;
                       response_called=0;
-                      std::cerr << "time_To_wait" << std::endl;
                     } else {
                       response_called++;
                     }
