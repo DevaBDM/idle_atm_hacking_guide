@@ -22,7 +22,8 @@ fi
 
 cmake -DCMAKE_BUILD_TYPE=release src/ && \ 
 cmake --build . && \
-termux-elf-cleaner $bin_FILES
+termux-elf-cleaner $bin_FILES || \
+exit 11
 for file in $bin_FILES;do
 	if [ -s "$file" ];then
 		mv "$file" "$INSTALL/"
