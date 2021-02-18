@@ -19,6 +19,7 @@
 #include <vector>
 
 #include <regex>
+#include <unistd.h>
 int found_result_of_guess(0);
 int found_what_you_need(0);
 std::regex  regex_str_to_match ("empty");
@@ -65,6 +66,8 @@ class TdExample {
 
   void loop(std::string text) {
     int sent_number_message(0);
+    int time_To_wait(2);
+    int response_called(0);
     while (true) {
       if (need_restart_) {
         restart();
@@ -72,12 +75,6 @@ class TdExample {
         process_response(client_manager_->receive(10));
       } else {
         if ( sent_number_message == 0){
-            for ( int i = 1; i <= 500; i++) {
-              auto response = client_manager_->receive(0);
-              if (response.object) {
-                process_response(std::move(response));
-              }
-            }
           auto send_message = td_api::make_object<td_api::sendMessage>();
           send_message->chat_id_ = 1671848326;
           auto message_content = td_api::make_object<td_api::inputMessageText>();
@@ -86,6 +83,13 @@ class TdExample {
           send_message->input_message_content_ = std::move(message_content);
 
           send_query(std::move(send_message), {});
+          
+          if (need_restart_) {
+            restart();
+          } else if (!are_authorized_) {
+            process_response(client_manager_->receive(10));
+          }
+          
           regex_str_to_match = "🏧 Enter a (.*)-digit number - PIN code";
             while (true) {
                 auto response = client_manager_->receive(0);
@@ -106,15 +110,22 @@ class TdExample {
                     regex_str_to_match = "🏧 Hacking ATMs 🏧";
                     found_what_you_need=0;
                   }
+                } else if (need_restart_) {
+                  restart();
+                } else if (!are_authorized_) {
+                  process_response(client_manager_->receive(10));
+                } else {
+                  if ( response_called == 2000000 ){
+                    sleep(time_To_wait);
+                    time_To_wait+=2;
+                    response_called=0;
+                    std::cerr << "time_To_wait" << std::endl;
+                  } else {
+                    response_called++;
+                  }
                 }
             }
           } else {
-            for ( int i = 1; i <= 1000; i++) {
-              auto response = client_manager_->receive(0);
-              if (response.object) {
-                process_response(std::move(response));
-              }
-            }
             return;
           }
       }
