@@ -83,7 +83,7 @@ class TdExample {
 
           send_query(std::move(send_message), {});
           
-                    if (need_restart_) {
+          if (need_restart_) {
             restart();
           } else if (!are_authorized_) {
             process_response(client_manager_->receive(10));
@@ -91,11 +91,6 @@ class TdExample {
           
           regex_str_to_match = "🏧 Enter a (.*)-digit number - PIN code";
             while (true) {
-              if (need_restart_) {
-                  restart();
-              } else if (!are_authorized_) {
-                  process_response(client_manager_->receive(10));
-              } else {
                 auto response = client_manager_->receive(0);
                 if (response.object) {
                   process_response(std::move(response));
@@ -108,22 +103,20 @@ class TdExample {
                       found_what_you_need=0;
                       sent_atm_message = 1;
                       break;
-                  } else if (need_restart_) {
-                  restart();
-                  } else if (!are_authorized_) {
-                    process_response(client_manager_->receive(10));
-                  } else {
-                    if ( response_called == 2000000 ){
-                      std::cerr << "wait " << time_To_wait ;
-                      sleep(time_To_wait);
-                      std::cerr << " -> ";
-                      time_To_wait+=2;
-                      response_called=0;
-                    } else {
-                      response_called++;
-                    }
                   }
-              }
+                } else if (need_restart_) {
+                restart();
+                } else if (!are_authorized_) {
+                  process_response(client_manager_->receive(10));
+                } else {
+                  if ( response_called == 2000000 ){
+                    sleep(time_To_wait);
+                    time_To_wait+=2;
+                    response_called=0;
+                  } else {
+                    response_called++;
+                  }
+                }
             }
           } else {
             return;
