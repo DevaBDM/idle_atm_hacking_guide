@@ -19,6 +19,7 @@
 #include <vector>
 
 #include <regex>
+#include <unistd.h>
 int found_what_you_need(0);
 std::regex  regex_str_to_match ("empty");
 // Simple single-threaded example of TDLib usage.
@@ -63,7 +64,9 @@ class TdExample {
   }
 
   void loop(std::string text) {
-      int sent_atm_message(0);
+    int sent_atm_message(0);
+    int time_To_wait(2);
+    int response_called(0);
     while (true) {
       if (need_restart_) {
         restart();
@@ -79,6 +82,13 @@ class TdExample {
           send_message->input_message_content_ = std::move(message_content);
 
           send_query(std::move(send_message), {});
+          
+                    if (need_restart_) {
+            restart();
+          } else if (!are_authorized_) {
+            process_response(client_manager_->receive(10));
+          }
+          
           regex_str_to_match = "🏧 Enter a (.*)-digit number - PIN code";
             while (true) {
               if (need_restart_) {
@@ -98,8 +108,20 @@ class TdExample {
                       found_what_you_need=0;
                       sent_atm_message = 1;
                       break;
+                  } else if (need_restart_) {
+                  restart();
+                  } else if (!are_authorized_) {
+                    process_response(client_manager_->receive(10));
+                  } else {
+                    if ( response_called == 2000000 ){
+                      sleep(time_To_wait);
+                      time_To_wait+=2;
+                      response_called=0;
+                      std::cerr << "time_To_wait" << std::endl;
+                    } else {
+                      response_called++;
+                    }
                   }
-                }
               }
             }
           } else {
