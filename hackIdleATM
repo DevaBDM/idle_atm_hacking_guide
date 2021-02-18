@@ -104,14 +104,14 @@ getResult () {
     unset guessRes
     gametrial=$(( "$gametrial" - 1 ))
   while true;do
-    if [ $critcal_level -ge 3 ];then
+    if [ $critcal_level -ge 6 ];then
       reached_critcal_level result
     fi
     echo -n "-> "
     guessRes=$(./send-to-bot.co $clipGuess)  
     if [ "$guessRes" ];then
       if [ "$guessRes" == "ERROR" ];then
-        sleep 3
+        sleep 5
       else
         break
       fi
