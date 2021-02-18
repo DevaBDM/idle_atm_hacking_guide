@@ -116,9 +116,13 @@ class TdExample {
                   process_response(client_manager_->receive(10));
                 } else {
                   if ( response_called == 2000000 ){
-		                std::cerr << "wait " << time_To_wait ;
+		    if (time_To_wait == 12 ){
+                        restart();
+                        time_To_wait=2;
+                    }
+		    std::cerr << "wait " << time_To_wait ;
                     sleep(time_To_wait);
-		                std::cerr << " -> ";
+		    std::cerr << " -> ";
                     time_To_wait+=2;
                     response_called=0;
                   } else {
