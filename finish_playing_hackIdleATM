@@ -1,0 +1,3 @@
+#!/bin/bash
+cd "$(dirname $0)/guess_atm_in_idle_city_game_cache"
+printf "$1" > ./finish_after_game
