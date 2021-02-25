@@ -9,14 +9,14 @@ if [ ! -d "$INSTALL" ];then
 	exit 5 
 fi
 
-if [ -s "hackIdleATM" ];then
-  mv "hackIdleATM" "$INSTALL_PREFIX/" && \
-  chmod +x "$INSTALL_PREFIX/hackIdleATM" || \
-  echo "can't move hackIdleATM to \"$INSTALL_PREFIX/\"" \
+if [[ -s "hackIdleATM" && -s "finish_playing_hackIdleATM" ]];then
+  mv "hackIdleATM" "finish_playing_hackIdleATM" "$INSTALL_PREFIX/" && \
+  chmod +x "$INSTALL_PREFIX/hackIdleATM" "$INSTALL_PREFIX/finish_playing_hackIdleATM" || \
+  echo "can't move hackIdleATM or finish_playing_hackIdleATM to \"$INSTALL_PREFIX/\"" \
   echo "move it yourself!!!!!" \
   exit 6
 else
-  echo "hackIdleATM not found"
+  echo "hackIdleATM or finish_playing_hackIdleATM not found"
   exit 7
 fi
 
