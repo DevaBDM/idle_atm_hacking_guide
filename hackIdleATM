@@ -21,10 +21,47 @@ startUp () {
 	done
 }
 
+printBOX () {
+  printUnderLineBridge
+  printf "| Done in $( changeTimeFormat $(expr $tIME_end_main - $tIME_star_main) )\n"
+  printf "| $game_played/$finish_game_PP game played\n"
+  printf "| $hacked_game atm Hacked\n"
+  printf "| Time $( changeTimeFormat $(expr $(date +%s) - $game_started) )\n"
+  printUnderLineBridge
+}
+
+printBOX_finished () {
+  printUnderLineBridge
+  printf "| $game_played/$finish_game_PP game played\n"
+  printf "| $hacked_game atm Hacked\n"
+  printf "| Time $( changeTimeFormat $(expr $(date +%s) - $game_started) )\n"
+  printUnderLineBridge
+}
+
 reached_critcal_level () {
   termux-notification --sound -t "Reached critical level"
   printf "Reached critical level\n"
   exit
+}
+
+exit_finish_playing () {
+	
+	finish_game=$(cat ./finish_after_game)
+	if [ "${finish_game}" == "INFINITE" ];then
+		finish_game_count=0
+		finish_game_PP=I
+		return
+	elif [ $finish_game -le $finish_game_count ];then
+		printBOX_finished
+		printf "| Finished playing .......\n"
+		printUnderLineBridge
+		exit
+	else
+		finish_game_PP=$(( $game_played + $finish_game - $finish_game_count ))
+		finish_game_count=$(( $finish_game_count + 1 ))
+
+	fi
+
 }
 
 startGame () {
@@ -488,6 +525,8 @@ changeTimeFormat () {
 }
 
 main () {
+	printf "INFINITE" > ./finish_after_game
+  finish_game_count=0
   if [[ "$nNN" == 6 || "$nNN" == 4 ]];then
     startGame
   else
@@ -514,12 +553,8 @@ main () {
       tIME_end_main=$(date +%s)
       game_played=$(($game_played + 1))
       clear
-      printUnderLineBridge
-      printf "| Done in $( changeTimeFormat $(expr $tIME_end_main - $tIME_star_main) )\n"
-      printf "| $game_played game played\n"
-      printf "| $hacked_game atm Hacked\n"
-      printf "| Time $( changeTimeFormat $(expr $(date +%s) - $game_started) )\n"
-      printUnderLineBridge
+      exit_finish_playing
+      printBOX
       if [ "$nNN" == "4" ];then
         gametrial=$nNN4
       elif [ "$nNN" == "6" ];then
@@ -534,12 +569,8 @@ main () {
         tIME_end_main=$(date +%s)
         game_played=$(($game_played + 1))
         clear
-        printUnderLineBridge
-        printf "| Done in $( changeTimeFormat $(expr $tIME_end_main - $tIME_star_main) )\n"
-        printf "| $game_played game played\n"
-        printf "| $hacked_game atm Hacked\n"
-        printf "| Time $( changeTimeFormat $(expr $(date +%s) - $game_started) )\n"
-        printUnderLineBridge
+        exit_finish_playing
+        printBOX
         if [ "$nNN" == "4" ];then
           gametrial=$nNN4
         elif [ "$nNN" == "6" ];then
