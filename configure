@@ -3,7 +3,7 @@ INSTALL_FOLDER="guess_atm_in_idle_city_game_cache"
 INSTALL_PREFIX="$PREFIX/opt/bin"
 INSTALL="$INSTALL_PREFIX/$INSTALL_FOLDER"
 
-bin_FILES="get-result.co send-to-bot.co start-new-game.co real-td.co unlimit-slots.co unlimit-slots-free.co"
+bin_FILES="get-result send-to-bot start-new-game real-td unlimit-slots unlimit-slots-free"
 if [ ! -d "$INSTALL" ];then
 	mkdir -p "$INSTALL" || \
 	exit 5 
@@ -21,22 +21,21 @@ else
 fi
 
 cmake -DCMAKE_BUILD_TYPE=release src/ && \ 
-cmake --build . && \
-termux-elf-cleaner $bin_FILES || \
+cmake --build . || \
 exit 11
 for file in $bin_FILES;do
 	if [ -s "$file" ];then
 		mv "$file" "$INSTALL/"
 		chmod +x "$INSTALL/$file"
+		echo "cd \"$INSTALL\"" > "$INSTALL_PREFIX/$file" && \
+		echo "./$file.co" >> "$INSTALL_PREFIX/$file" && \
+		chmod +x "$INSTALL_PREFIX/$file" || \
+		exit 9
 	else
 		echo "\"$file\" not found"
 		exit 8
 	fi
 done
-echo "cd \"$INSTALL\"" > "$INSTALL_PREFIX/real-td" && \
-echo "./real-td.co" >> "$INSTALL_PREFIX/real-td" && \
-chmod +x "$INSTALL_PREFIX/real-td" || \
-exit 9
 
 cd $INSTALL_PREFIX
 ./real-td
