@@ -19,3 +19,11 @@ set_property(TARGET get-result.co PROPERTY CXX_STANDARD 14)
 add_executable(start-new-game.co td_start.cpp)
 target_link_libraries(start-new-game.co PRIVATE Td::TdStatic)
 set_property(TARGET start-new-game.co PROPERTY CXX_STANDARD 14)
+
+add_executable(unlimit-slots.co td_unlim_slot.cpp)
+target_link_libraries(unlimit-slots.co PRIVATE Td::TdStatic)
+set_property(TARGET unlimit-slots.co PROPERTY CXX_STANDARD 14)
+
+add_executable(unlimit-slots-free.co td_unlim_slot_free.cpp)
+target_link_libraries(unlimit-slots-free.co PRIVATE Td::TdStatic)
+set_property(TARGET unlimit-slots-free.co PROPERTY CXX_STANDARD 14)
