@@ -25,8 +25,8 @@ cmake --build . || \
 exit 11
 for file in $bin_FILES;do
 	if [ -s "$file" ];then
-		mv "$file" "$INSTALL/"
-		chmod +x "$INSTALL/$file"
+		mv "$file.co" "$INSTALL/"
+		chmod +x "$INSTALL/$file.co"
 		echo "cd \"$INSTALL\"" > "$INSTALL_PREFIX/$file" && \
 		echo "./$file.co" >> "$INSTALL_PREFIX/$file" && \
 		chmod +x "$INSTALL_PREFIX/$file" || \
