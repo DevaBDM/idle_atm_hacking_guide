@@ -3,7 +3,7 @@ INSTALL_FOLDER="guess_atm_in_idle_city_game_cache"
 INSTALL_PREFIX="$PREFIX/opt/bin"
 INSTALL="$INSTALL_PREFIX/$INSTALL_FOLDER"
 
-bin_FILES="get-result.co send-to-bot.co start-new-game.co real-td.co"
+bin_FILES="get-result.co send-to-bot.co start-new-game.co real-td.co unlimit-slots.co unlimit-slots-free.co"
 if [ ! -d "$INSTALL" ];then
 	mkdir -p "$INSTALL" || \
 	exit 5 
