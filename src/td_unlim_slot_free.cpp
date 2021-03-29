@@ -117,7 +117,7 @@ class TdExample {
                     time_To_wait+=10;
                     response_called=0;
                     sent_atm_message = 0;
-                    if ( time_To_wait > 120)
+                    if ( time_To_wait > 60)
                       break;
                   } else {
                     response_called++;
