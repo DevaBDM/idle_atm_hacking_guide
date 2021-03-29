@@ -64,11 +64,10 @@ class TdExample {
     send_query(td_api::make_object<td_api::getOption>("version"), {});
   }
 
-  void loop(long spin) {
+  void loop() {
     int sent_atm_message(0);
     int time_To_wait(10);
     int response_called(0);
-    std::string stringSpin{std::to_string(spin)};
     while (true) {
       if (need_restart_) {
         restart();
@@ -80,7 +79,7 @@ class TdExample {
           send_message->chat_id_ = 1671848326;
           auto message_content = td_api::make_object<td_api::inputMessageText>();
           message_content->text_ = td_api::make_object<td_api::formattedText>();
-          message_content->text_->text_ = std::move("🎰 Bet " + stringSpin + "K💵");
+          message_content->text_->text_ = std::move("🎰 Bet 100K💵");
           send_message->input_message_content_ = std::move(message_content);
 
           send_query(std::move(send_message), {});
@@ -117,7 +116,7 @@ class TdExample {
                     time_To_wait+=10;
                     response_called=0;
                     sent_atm_message = 0;
-                    if ( time_To_wait > 120)
+                    if ( time_To_wait > 60)
                       break;
                   } else {
                     response_called++;
@@ -334,15 +333,12 @@ class TdExample {
 };
 
 int main() {
-  std::cout << "Enter current free spin value: ";
-  long betMuch{};
-  std::cin >> betMuch;
   TdExample example;
   int tooMuchError{};
-  while ( betMuch > 0 )
+  while ( true )
   {
     runSucc = false;
-    example.loop(betMuch);
+    example.loop();
     (( runSucc ) ? --tooMuchError:++tooMuchError);
     sleep(1);
     if ( tooMuchError > 2 ) 
