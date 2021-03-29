@@ -22,6 +22,7 @@
 #include <unistd.h>
 int found_what_you_need(0);
 bool runSucc{};
+int bot_down{1};
 std::regex  regex_str_to_match ("empty");
 // Simple single-threaded example of TDLib usage.
 // Real world programs should use separate thread for the user input.
@@ -99,11 +100,13 @@ class TdExample {
                   if (found_what_you_need == 1){
                       found_what_you_need=0;
                       sent_atm_message = 1;
+                      bot_down=1;
                       runSucc = true;
                       break;
                   } else if (found_what_you_need == 2) {
                       found_what_you_need=0;
                       sent_atm_message = 1;
+                      bot_down=1;
                       runSucc = false;
                       break;
                   }
@@ -117,8 +120,11 @@ class TdExample {
                     time_To_wait+=10;
                     response_called=0;
                     sent_atm_message = 0;
-                    if ( time_To_wait > 60)
-                      break;
+                    if ( time_To_wait > (20*bot_down))
+                      {
+                        bot_down+=1;
+                        break;
+                      }
                   } else {
                     response_called++;
                   }
