@@ -24,7 +24,7 @@ cmake -DCMAKE_BUILD_TYPE=release src/ && \
 cmake --build . || \
 exit 11
 for file in $bin_FILES;do
-	if [ -s "$file" ];then
+	if [ -s "$file.co" ];then
 		mv "$file.co" "$INSTALL/"
 		chmod +x "$INSTALL/$file.co"
 		echo "cd \"$INSTALL\"" > "$INSTALL_PREFIX/$file" && \
