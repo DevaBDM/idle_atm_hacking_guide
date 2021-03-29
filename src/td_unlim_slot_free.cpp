@@ -66,7 +66,7 @@ class TdExample {
 
   void loop(long spin) {
     int sent_atm_message(0);
-    int time_To_wait(2);
+    int time_To_wait(10);
     int response_called(0);
     std::string stringSpin{std::to_string(spin)};
     while (true) {
@@ -114,8 +114,11 @@ class TdExample {
                 } else {
                   if ( response_called == 2000000 ){
                     sleep(time_To_wait);
-                    time_To_wait+=2;
+                    time_To_wait+=10;
                     response_called=0;
+                    sent_atm_message = 0;
+                    if ( time_To_wait > 120)
+                      break;
                   } else {
                     response_called++;
                   }
@@ -339,15 +342,12 @@ int main() {
   while ( freeSpin > 0 )
   {
     runSucc = false;
-    //std::cout << freeSpin << '\n';
     example.loop(freeSpin);
-    (( runSucc ) ? --freeSpin:++tooMuchError);
-    //std::cout << freeSpin << '\n';
-    //char wait{};
-    //std::cin >> wait ;
+    (( runSucc ) ? (--tooMuchError,--freeSpin):++tooMuchError);
+    sleep(1);
     if ( tooMuchError > 2 ) 
       break;
-    else
-      continue;
+    else if ( tooMuchError < 0 )
+      tooMuchError=0;
   }
 }
