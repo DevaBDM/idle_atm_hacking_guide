@@ -1,4 +1,4 @@
-
+#configure file
 INSTALL_FOLDER="guess_atm_in_idle_city_game_cache"
 INSTALL_PREFIX="$PREFIX/opt/bin"
 INSTALL="$INSTALL_PREFIX/$INSTALL_FOLDER"
